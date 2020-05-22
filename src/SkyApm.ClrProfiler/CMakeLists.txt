@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.5)
 
-SET (CMAKE_TOOLCHAIN_FILE         "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-SET (CMAKE_C_COMPILER             "/usr/bin/clang-3.9")
-SET (CMAKE_CXX_COMPILER           "/usr/bin/clang++-3.9")
+SET (CMAKE_TOOLCHAIN_FILE         "/Users/liuhaoyang/projects/github/microsoft/vcpkg/scripts/buildsystems/vcpkg.cmake")
+SET (CMAKE_C_COMPILER             "/usr/bin/clang")
+SET (CMAKE_CXX_COMPILER           "/usr/bin/clang++")
 
 project("SkyApm.ClrProfiler")
 

@@ -4,7 +4,7 @@
 		"-I coreclr/src/pal/inc/rt -I coreclr/src/pal/prebuilt/inc -I coreclr/src/pal/inc -I coreclr/src/inc -I coreclr/built/inc",
 		"-I ~/vcpkg/installed/x64-linux/include"
 	],
-	"clang.executable": "/usr/bin/clang-3.9",
+	"clang.executable": "/usr/bin/clang",
 	"files.associations": {
 		"typeinfo": "cpp"
 	},

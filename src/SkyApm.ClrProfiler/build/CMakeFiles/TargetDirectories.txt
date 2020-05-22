@@ -1,0 +1,3 @@
+/Users/liuhaoyang/projects/github/skywalking/skywalking-netcore/src/SkyApm.ClrProfiler/build/CMakeFiles/rebuild_cache.dir
+/Users/liuhaoyang/projects/github/skywalking/skywalking-netcore/src/SkyApm.ClrProfiler/build/CMakeFiles/edit_cache.dir
+/Users/liuhaoyang/projects/github/skywalking/skywalking-netcore/src/SkyApm.ClrProfiler/build/CMakeFiles/SkyApm.ClrProfiler.dir
