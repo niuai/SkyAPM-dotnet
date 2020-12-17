@@ -20,7 +20,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "SkyAPM.Agent.AspNetCore"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Cmb.SkyApm.Agent.AspNetCore"
       },
       "applicationUrl": "http://localhost:5001/"
     }
