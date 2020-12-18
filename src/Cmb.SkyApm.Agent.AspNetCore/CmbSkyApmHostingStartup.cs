@@ -18,8 +18,8 @@ namespace Cmb.SkyApm.Agent.AspNetCore
             {
                 services.AddSkyAPM(ext => ext.AddAspNetCoreHosting());
 
-                services.RemoveAll<ICarrierPropagator>();
-                services.AddSingleton<ICarrierPropagator, CmbCarrierPropagator>();
+                //services.RemoveAll<ICarrierPropagator>();
+                //services.AddSingleton<ICarrierPropagator, CmbCarrierPropagator>();
             });
         }
     }

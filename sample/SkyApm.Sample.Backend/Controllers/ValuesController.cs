@@ -12,8 +12,10 @@ namespace SkyApm.Sample.Backend.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<string>> Get()
         {
+            await new HttpClient().GetAsync("http://localhost:5003/api/WeatherForecast");
+
             return new List<string> {"value1", "value2"};
         }
 
