@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using SkyApm.Common;
 using SkyApm.Tracing;
+using System.ComponentModel;
 
 namespace Cmb.SkyApm.Tracing
 {
@@ -8,21 +9,22 @@ namespace Cmb.SkyApm.Tracing
     {
         #region Carrier
 
-        public bool HasValue { get; } = true;
+        public bool HasValue { get; private set; } = true;
 
         public bool? Sampled { get; set; }
 
-        public string TraceId { get; }
+        [Description("X-B3-TraceId")]
+        public string TraceId { get; private set; }
 
-        public string ParentSegmentId { get; }
+        public string ParentSegmentId { get; private set; }
 
-        public int ParentSpanId { get; }
+        public int ParentSpanId { get; private set; }
 
-        public string ParentServiceId { get; }
+        public string ParentServiceId { get; private set; }
 
-        public string ParentServiceInstanceId { get; }
+        public string ParentServiceInstanceId { get; private set; }
 
-        public string EntryServiceInstanceId { get; }
+        public string EntryServiceInstanceId { get; private set; }
 
         public StringOrIntValue NetworkAddress { get; set; }
 
@@ -32,7 +34,10 @@ namespace Cmb.SkyApm.Tracing
 
         #endregion
 
+        [Description("X-B3-BusinessId")]
         public string BusinessId { get; set; }
+
+        //public 
     }
 
     public static class CarrierExtensions
