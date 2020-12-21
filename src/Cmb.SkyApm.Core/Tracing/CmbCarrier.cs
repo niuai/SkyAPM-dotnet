@@ -37,7 +37,6 @@ namespace Cmb.SkyApm.Tracing
         [Description("X-B3-BusinessId")]
         public string BusinessId { get; set; }
 
-        //public 
     }
 
     public static class CarrierExtensions

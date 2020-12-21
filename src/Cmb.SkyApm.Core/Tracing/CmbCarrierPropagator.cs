@@ -40,7 +40,7 @@ namespace Cmb.SkyApm.Tracing
             if (headerCollection != null && headerCollection.Any(h => h.Key.StartsWith("X-B3-")))
             {
                 if (!cmbCarrier.HasValue)
-                    cmbCarrier = new CmbCarrier();
+                    cmbCarrier = new CmbCarrier() { Sampled = true };
 
                 foreach (var p in cmbCarrier.GetType().GetProperties().Where(cp => cp.GetCustomAttributes(typeof(DescriptionAttribute), true).Any()))
                 {
