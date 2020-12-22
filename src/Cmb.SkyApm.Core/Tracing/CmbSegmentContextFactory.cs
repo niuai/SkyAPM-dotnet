@@ -14,6 +14,7 @@ namespace Cmb.SkyApm.Tracing
         private readonly IEntrySegmentContextAccessor _entrySegmentContextAccessor;
         private readonly ILocalSegmentContextAccessor _localSegmentContextAccessor;
         private readonly IExitSegmentContextAccessor _exitSegmentContextAccessor;
+        private readonly ICmbCarrierAccessor _cmbCarrierAccessor;
         private readonly IRuntimeEnvironment _runtimeEnvironment;
         private readonly ISamplerChainBuilder _samplerChainBuilder;
         private readonly IUniqueIdGenerator _uniqueIdGenerator;
@@ -25,6 +26,7 @@ namespace Cmb.SkyApm.Tracing
             IEntrySegmentContextAccessor entrySegmentContextAccessor,
             ILocalSegmentContextAccessor localSegmentContextAccessor,
             IExitSegmentContextAccessor exitSegmentContextAccessor,
+            ICmbCarrierAccessor cmbCarrierAccessor,
             IConfigAccessor configAccessor)
         {
             _runtimeEnvironment = runtimeEnvironment;
@@ -33,6 +35,7 @@ namespace Cmb.SkyApm.Tracing
             _entrySegmentContextAccessor = entrySegmentContextAccessor;
             _localSegmentContextAccessor = localSegmentContextAccessor;
             _exitSegmentContextAccessor = exitSegmentContextAccessor;
+            _cmbCarrierAccessor = cmbCarrierAccessor;
             _instrumentConfig = configAccessor.Get<InstrumentConfig>();
         }
 
@@ -42,7 +45,7 @@ namespace Cmb.SkyApm.Tracing
             var segmentId = GetSegmentId(carrier);
             var sampled = GetSampled(carrier, operationName);
             var segmentContext = new SegmentContext(traceId, segmentId, sampled,
-                _instrumentConfig.ServiceName ?? _instrumentConfig.ApplicationCode,
+                _instrumentConfig.ServiceName,
                 _instrumentConfig.ServiceInstanceName,
                 operationName, SpanType.Entry);
 
@@ -65,6 +68,9 @@ namespace Cmb.SkyApm.Tracing
             }
 
             _entrySegmentContextAccessor.Context = segmentContext;
+            if (carrier is ICmbCarrier c)
+                _cmbCarrierAccessor.Context = c;
+
             return segmentContext;
         }
 
@@ -75,7 +81,7 @@ namespace Cmb.SkyApm.Tracing
             var segmentId = GetSegmentId();
             var sampled = GetSampled(parentSegmentContext, operationName);
             var segmentContext = new SegmentContext(traceId, segmentId, sampled,
-                _instrumentConfig.ServiceName ?? _instrumentConfig.ApplicationCode,
+                _instrumentConfig.ServiceName,
                 _instrumentConfig.ServiceInstanceName,
                 operationName, SpanType.Local);
 
@@ -110,7 +116,7 @@ namespace Cmb.SkyApm.Tracing
             var segmentId = GetSegmentId();
             var sampled = GetSampled(parentSegmentContext, operationName, networkAddress);
             var segmentContext = new SegmentContext(traceId, segmentId, sampled,
-                _instrumentConfig.ServiceName ?? _instrumentConfig.ApplicationCode,
+                _instrumentConfig.ServiceName,
                 _instrumentConfig.ServiceInstanceName,
                 operationName, SpanType.Exit);
 
@@ -142,6 +148,7 @@ namespace Cmb.SkyApm.Tracing
         public void Release(SegmentContext segmentContext)
         {
             segmentContext.Span.Finish();
+            
             switch (segmentContext.Span.SpanType)
             {
                 case SpanType.Entry:
@@ -152,6 +159,7 @@ namespace Cmb.SkyApm.Tracing
                     break;
                 case SpanType.Exit:
                     _exitSegmentContextAccessor.Context = null;
+                    _cmbCarrierAccessor.Context = null;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(SpanType), segmentContext.Span.SpanType, "Invalid SpanType.");

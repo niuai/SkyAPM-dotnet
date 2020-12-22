@@ -37,5 +37,11 @@ namespace Cmb.SkyApm.Tracing
         public string CmbParentSpanId { get; set; }
 
         public string CmbSpanId { get; set; }
+
+        public string CmbTimeStamp { get; set; }
+
+        public string CmbSampled { get; set; }
+
+        public string CmbDebug { get; set; }
     }
 }

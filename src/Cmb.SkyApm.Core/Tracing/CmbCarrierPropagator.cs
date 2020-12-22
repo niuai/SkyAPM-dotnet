@@ -16,13 +16,15 @@ namespace Cmb.SkyApm.Tracing
         private readonly IEntrySegmentContextAccessor _entrySegmentContextAccessor;
         private readonly ILocalSegmentContextAccessor _localSegmentContextAccessor;
         private readonly IExitSegmentContextAccessor _exitSegmentContextAccessor;
+        private readonly ICmbCarrierAccessor _cmbCarrierAccessor;
 
         public CmbCarrierPropagator(IEnumerable<ICarrierFormatter> carrierFormatters,
             ISegmentContextFactory segmentContextFactory,
             IUniqueIdGenerator uniqueIdGenerator,
             IEntrySegmentContextAccessor entrySegmentContextAccessor,
             ILocalSegmentContextAccessor localSegmentContextAccessor,
-            IExitSegmentContextAccessor exitSegmentContextAccessor)
+            IExitSegmentContextAccessor exitSegmentContextAccessor,
+            ICmbCarrierAccessor cmbCarrierAccessor)
         {
             _carrierFormatters = carrierFormatters;
             _segmentContextFactory = segmentContextFactory;
@@ -30,6 +32,7 @@ namespace Cmb.SkyApm.Tracing
             _entrySegmentContextAccessor = entrySegmentContextAccessor;
             _localSegmentContextAccessor = localSegmentContextAccessor;
             _exitSegmentContextAccessor = exitSegmentContextAccessor;
+            _cmbCarrierAccessor = cmbCarrierAccessor;
         }
 
         public void Inject(SegmentContext segmentContext, ICarrierHeaderCollection headerCollection)
@@ -39,6 +42,8 @@ namespace Cmb.SkyApm.Tracing
 
             cmbCarrier.CmbParentSpanId = GetParentSegmentContext(SpanType.Exit).SegmentId;
             cmbCarrier.CmbSpanId = HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
+            cmbCarrier.CmbTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            cmbCarrier.CmbSampled = _cmbCarrierAccessor.Context.CmbSampled;
 
             foreach (var p in cmbCarrier.GetType().GetProperties().Where(cp => cp.GetCustomAttributes(typeof(DescriptionAttribute), true).Any()))
             {
@@ -72,8 +77,10 @@ namespace Cmb.SkyApm.Tracing
                     }
                 }
 
-                cmbCarrier.CmbParentSpanId = !string.IsNullOrEmpty(cmbCarrier.CmbParentSpanId) ? cmbCarrier.CmbParentSpanId : "0";
-                cmbCarrier.CmbSpanId = !string.IsNullOrEmpty(cmbCarrier.CmbSpanId) ? cmbCarrier.CmbSpanId : HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
+                if (string.IsNullOrEmpty(cmbCarrier.CmbParentSpanId))
+                    cmbCarrier.CmbParentSpanId = "0";
+                if (string.IsNullOrEmpty(cmbCarrier.CmbSpanId))
+                    cmbCarrier.CmbSpanId = HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
             }
 
             return cmbCarrier;
