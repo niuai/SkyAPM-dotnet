@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Cmb.SkyApm.Common;
+using Mapster;
 using SkyApm.Common;
 using SkyApm.Tracing;
 using System.ComponentModel;
@@ -37,6 +38,11 @@ namespace Cmb.SkyApm.Tracing
         [Description("X-B3-BusinessId")]
         public string BusinessId { get; set; }
 
+        [Description("X-B3-ParentSpanId")]
+        public string CmbParentSpanId { get; set; }
+
+        [Description("X-B3-SpanId")]
+        public string CmbSpanId { get; set; }
     }
 
     public static class CarrierExtensions

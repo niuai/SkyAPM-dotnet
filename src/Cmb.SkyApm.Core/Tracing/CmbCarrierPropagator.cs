@@ -1,4 +1,5 @@
-﻿using SkyApm.Tracing;
+﻿using Cmb.SkyApm.Common;
+using SkyApm.Tracing;
 using SkyApm.Tracing.Segments;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,18 +11,23 @@ namespace Cmb.SkyApm.Tracing
     {
         private readonly IEnumerable<ICarrierFormatter> _carrierFormatters;
         private readonly ISegmentContextFactory _segmentContextFactory;
+        private readonly IUniqueIdGenerator _uniqueIdGenerator;
 
         public CmbCarrierPropagator(IEnumerable<ICarrierFormatter> carrierFormatters,
-            ISegmentContextFactory segmentContextFactory)
+            ISegmentContextFactory segmentContextFactory, IUniqueIdGenerator uniqueIdGenerator)
         {
             _carrierFormatters = carrierFormatters;
             _segmentContextFactory = segmentContextFactory;
+            _uniqueIdGenerator = uniqueIdGenerator;
         }
 
         public void Inject(SegmentContext segmentContext, ICarrierHeaderCollection headerCollection)
         {
             var carrier = OriginInject(segmentContext, headerCollection);
             var cmbCarrier = carrier.ToCmbCarrier();
+
+            cmbCarrier.CmbParentSpanId = carrier.ParentSegmentId;
+            cmbCarrier.CmbSpanId = HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
 
             foreach (var p in cmbCarrier.GetType().GetProperties().Where(cp => cp.GetCustomAttributes(typeof(DescriptionAttribute), true).Any()))
             {
@@ -54,6 +60,9 @@ namespace Cmb.SkyApm.Tracing
                         p.SetValue(cmbCarrier, header.Value);
                     }
                 }
+
+                cmbCarrier.CmbParentSpanId = !string.IsNullOrEmpty(cmbCarrier.CmbParentSpanId) ? cmbCarrier.CmbParentSpanId : "0";
+                cmbCarrier.CmbSpanId = !string.IsNullOrEmpty(cmbCarrier.CmbSpanId) ? cmbCarrier.CmbSpanId : HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
             }
 
             return cmbCarrier;

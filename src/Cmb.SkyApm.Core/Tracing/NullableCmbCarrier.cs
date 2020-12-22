@@ -33,5 +33,9 @@ namespace Cmb.SkyApm.Tracing
         #endregion
 
         public string BusinessId { get; set; }
+
+        public string CmbParentSpanId { get; set; }
+
+        public string CmbSpanId { get; set; }
     }
 }

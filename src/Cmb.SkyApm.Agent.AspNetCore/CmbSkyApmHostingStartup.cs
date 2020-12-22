@@ -22,6 +22,8 @@ namespace Cmb.SkyApm.Agent.AspNetCore
                 services.AddSingleton<ICarrierPropagator, CmbCarrierPropagator>();
                 services.RemoveAll<IUniqueIdGenerator>();
                 services.AddSingleton<IUniqueIdGenerator, CmbUniqueIdGenerator>();
+                services.RemoveAll<ISegmentContextFactory>();
+                services.AddSingleton<ISegmentContextFactory, CmbSegmentContextFactory>();
             });
         }
     }
