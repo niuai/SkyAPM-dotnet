@@ -37,7 +37,7 @@ namespace Cmb.SkyApm.Tracing
             var carrier = OriginInject(segmentContext, headerCollection);
             var cmbCarrier = carrier.ToCmbCarrier();
 
-            cmbCarrier.CmbParentSpanId = GetParentSegmentContext(SpanType.Exit)?.SegmentId ?? "0";
+            cmbCarrier.CmbParentSpanId = GetParentSegmentContext(SpanType.Exit).SegmentId;
             cmbCarrier.CmbSpanId = HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
 
             foreach (var p in cmbCarrier.GetType().GetProperties().Where(cp => cp.GetCustomAttributes(typeof(DescriptionAttribute), true).Any()))
