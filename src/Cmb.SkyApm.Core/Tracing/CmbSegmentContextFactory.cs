@@ -107,7 +107,7 @@ namespace Cmb.SkyApm.Tracing
         {
             var parentSegmentContext = GetParentSegmentContext(SpanType.Exit);
             var traceId = GetTraceId(parentSegmentContext);
-            var segmentId = GetSegmentId(parentSegmentContext);
+            var segmentId = GetSegmentId();
             var sampled = GetSampled(parentSegmentContext, operationName, networkAddress);
             var segmentContext = new SegmentContext(traceId, segmentId, sampled,
                 _instrumentConfig.ServiceName ?? _instrumentConfig.ApplicationCode,

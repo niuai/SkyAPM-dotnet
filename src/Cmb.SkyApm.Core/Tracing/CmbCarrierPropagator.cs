@@ -1,6 +1,7 @@
 ﻿using Cmb.SkyApm.Common;
 using SkyApm.Tracing;
 using SkyApm.Tracing.Segments;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -12,13 +13,23 @@ namespace Cmb.SkyApm.Tracing
         private readonly IEnumerable<ICarrierFormatter> _carrierFormatters;
         private readonly ISegmentContextFactory _segmentContextFactory;
         private readonly IUniqueIdGenerator _uniqueIdGenerator;
+        private readonly IEntrySegmentContextAccessor _entrySegmentContextAccessor;
+        private readonly ILocalSegmentContextAccessor _localSegmentContextAccessor;
+        private readonly IExitSegmentContextAccessor _exitSegmentContextAccessor;
 
         public CmbCarrierPropagator(IEnumerable<ICarrierFormatter> carrierFormatters,
-            ISegmentContextFactory segmentContextFactory, IUniqueIdGenerator uniqueIdGenerator)
+            ISegmentContextFactory segmentContextFactory,
+            IUniqueIdGenerator uniqueIdGenerator,
+            IEntrySegmentContextAccessor entrySegmentContextAccessor,
+            ILocalSegmentContextAccessor localSegmentContextAccessor,
+            IExitSegmentContextAccessor exitSegmentContextAccessor)
         {
             _carrierFormatters = carrierFormatters;
             _segmentContextFactory = segmentContextFactory;
             _uniqueIdGenerator = uniqueIdGenerator;
+            _entrySegmentContextAccessor = entrySegmentContextAccessor;
+            _localSegmentContextAccessor = localSegmentContextAccessor;
+            _exitSegmentContextAccessor = exitSegmentContextAccessor;
         }
 
         public void Inject(SegmentContext segmentContext, ICarrierHeaderCollection headerCollection)
@@ -26,7 +37,7 @@ namespace Cmb.SkyApm.Tracing
             var carrier = OriginInject(segmentContext, headerCollection);
             var cmbCarrier = carrier.ToCmbCarrier();
 
-            cmbCarrier.CmbParentSpanId = carrier.ParentSegmentId;
+            cmbCarrier.CmbParentSpanId = GetParentSegmentContext(SpanType.Exit)?.SegmentId ?? "0";
             cmbCarrier.CmbSpanId = HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
 
             foreach (var p in cmbCarrier.GetType().GetProperties().Where(cp => cp.GetCustomAttributes(typeof(DescriptionAttribute), true).Any()))
@@ -124,6 +135,21 @@ namespace Cmb.SkyApm.Tracing
             }
 
             return carrier;
+        }
+
+        private SegmentContext GetParentSegmentContext(SpanType spanType)
+        {
+            switch (spanType)
+            {
+                case SpanType.Entry:
+                    return null;
+                case SpanType.Local:
+                    return _entrySegmentContextAccessor.Context;
+                case SpanType.Exit:
+                    return _localSegmentContextAccessor.Context ?? _entrySegmentContextAccessor.Context;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(spanType), spanType, "Invalid SpanType.");
+            }
         }
     }
 }
