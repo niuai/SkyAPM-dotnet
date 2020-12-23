@@ -20,10 +20,14 @@ namespace Cmb.SkyApm.Agent.AspNetCore
 
                 services.RemoveAll<ICarrierPropagator>();
                 services.AddSingleton<ICarrierPropagator, CmbCarrierPropagator>();
+
                 services.RemoveAll<IUniqueIdGenerator>();
                 services.AddSingleton<IUniqueIdGenerator, CmbUniqueIdGenerator>();
+
                 services.RemoveAll<ISegmentContextFactory>();
                 services.AddSingleton<ISegmentContextFactory, CmbSegmentContextFactory>();
+
+                services.AddSingleton<ICmbCarrierAccessor, CmbCarrierAccessor>();
             });
         }
     }
