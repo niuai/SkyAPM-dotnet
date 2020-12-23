@@ -1,4 +1,5 @@
 ﻿using Cmb.SkyApm.Common;
+using Cmb.SkyApm.Tracing.Segments;
 using SkyApm.Tracing;
 using SkyApm.Tracing.Segments;
 using System;
@@ -16,15 +17,13 @@ namespace Cmb.SkyApm.Tracing
         private readonly IEntrySegmentContextAccessor _entrySegmentContextAccessor;
         private readonly ILocalSegmentContextAccessor _localSegmentContextAccessor;
         private readonly IExitSegmentContextAccessor _exitSegmentContextAccessor;
-        private readonly ICmbCarrierAccessor _cmbCarrierAccessor;
 
         public CmbCarrierPropagator(IEnumerable<ICarrierFormatter> carrierFormatters,
             ISegmentContextFactory segmentContextFactory,
             IUniqueIdGenerator uniqueIdGenerator,
             IEntrySegmentContextAccessor entrySegmentContextAccessor,
             ILocalSegmentContextAccessor localSegmentContextAccessor,
-            IExitSegmentContextAccessor exitSegmentContextAccessor,
-            ICmbCarrierAccessor cmbCarrierAccessor)
+            IExitSegmentContextAccessor exitSegmentContextAccessor)
         {
             _carrierFormatters = carrierFormatters;
             _segmentContextFactory = segmentContextFactory;
@@ -32,19 +31,19 @@ namespace Cmb.SkyApm.Tracing
             _entrySegmentContextAccessor = entrySegmentContextAccessor;
             _localSegmentContextAccessor = localSegmentContextAccessor;
             _exitSegmentContextAccessor = exitSegmentContextAccessor;
-            _cmbCarrierAccessor = cmbCarrierAccessor;
         }
 
         public void Inject(SegmentContext segmentContext, ICarrierHeaderCollection headerCollection)
         {
+            var cmbSegmentContext = (CmbSegmentContext)segmentContext;
             var carrier = OriginInject(segmentContext, headerCollection);
             var cmbCarrier = carrier.ToCmbCarrier();
 
             cmbCarrier.CmbParentSpanId = GetParentSegmentContext(SpanType.Exit).SegmentId;
             cmbCarrier.CmbSpanId = HashHelpers.GetHashString(carrier.ParentSegmentId + 1);
             cmbCarrier.CmbTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-            cmbCarrier.CmbSampled = _cmbCarrierAccessor.Context?.CmbSampled ?? "1";
-            cmbCarrier.CmbDebug = _cmbCarrierAccessor.Context?.CmbDebug ?? "0";
+            cmbCarrier.CmbSampled = cmbSegmentContext.CmbSampled ?? "1";
+            cmbCarrier.CmbDebug = cmbSegmentContext.CmbDebug ?? "0";
 
             foreach (var p in cmbCarrier.GetType().GetProperties().Where(cp => cp.GetCustomAttributes(typeof(DescriptionAttribute), true).Any()))
             {
