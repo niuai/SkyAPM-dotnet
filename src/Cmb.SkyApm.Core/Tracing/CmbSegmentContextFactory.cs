@@ -44,15 +44,15 @@ namespace Cmb.SkyApm.Tracing
             var traceId = GetTraceId(carrier);
             var segmentId = GetSegmentId(cmbCarrier);
             var sampled = GetSampled(carrier, operationName);
-            
+
             var segmentContext = new CmbSegmentContext(traceId, segmentId, sampled, _instrumentConfig.ServiceName, _instrumentConfig.ServiceInstanceName, operationName, SpanType.Entry)
             {
-                BusinessId = cmbCarrier.BusinessId,
+                BusinessId = cmbCarrier.BusinessId ?? _instrumentConfig.ApplicationCode,
                 CmbParentSpanId = cmbCarrier.CmbParentSpanId,
                 CmbSpanId = cmbCarrier.CmbSpanId,
                 CmbTimeStamp = cmbCarrier.CmbTimeStamp,
-                CmbSampled = cmbCarrier.CmbSampled,
-                CmbDebug = cmbCarrier.CmbDebug,
+                CmbSampled = cmbCarrier.CmbSampled ?? "1",
+                CmbDebug = cmbCarrier.CmbDebug ?? "0",
             };
 
             if (carrier.HasValue)

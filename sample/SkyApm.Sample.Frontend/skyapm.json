@@ -1,6 +1,7 @@
 {
   "SkyWalking": {
     "ServiceName": "asp-net-core-frontend",
+    "ApplicationCode": "businessid",
     "Namespace": "",
     "HeaderVersions": [
       "sw8"
@@ -8,7 +9,7 @@
     "Sampling": {
       "SamplePer3Secs": -1,
       "Percentage": -1.0,
-      "IgnorePaths": ["**/ignore"]
+      "IgnorePaths": [ "**/ignore" ]
     },
     "Logging": {
       "Level": "Information",
