@@ -27,7 +27,7 @@ namespace Cmb.SkyApm.Tracing
             var carrier = OriginInject(segmentContext, headerCollection);
             var cmbCarrier = carrier.ToCmbCarrier();
 
-            cmbCarrier.CmbParentSpanId = _entrySegmentContextAccessor.Context.SegmentId;
+            cmbCarrier.CmbParentSpanId = _entrySegmentContextAccessor.Context?.SegmentId ?? "0";
             cmbCarrier.CmbSpanId = HashHelpers.GetHashString(cmbCarrier.CmbParentSpanId + 1);
             cmbCarrier.CmbTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
             cmbCarrier.BusinessId = cmbSegmentContext.BusinessId;

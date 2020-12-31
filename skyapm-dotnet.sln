@@ -108,13 +108,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyApm.Sample.GenericHost",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cmb", "Cmb", "{1DC32510-9368-426F-B1FD-DBEDA3CE14AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmb.SkyApm.Core", "src\Cmb.SkyApm.Core\Cmb.SkyApm.Core.csproj", "{45A8EA11-2C8D-4152-8F29-FAC01CFF16E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cmb.SkyApm.Core", "src\Cmb.SkyApm.Core\Cmb.SkyApm.Core.csproj", "{45A8EA11-2C8D-4152-8F29-FAC01CFF16E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmb.SkyApm.Agent.AspNetCore", "src\Cmb.SkyApm.Agent.AspNetCore\Cmb.SkyApm.Agent.AspNetCore.csproj", "{897EC79B-DFA5-4657-88D4-76EE82A23255}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cmb.SkyApm.Agent.AspNetCore", "src\Cmb.SkyApm.Agent.AspNetCore\Cmb.SkyApm.Agent.AspNetCore.csproj", "{897EC79B-DFA5-4657-88D4-76EE82A23255}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.Backend.Backend", "src\SkyApm.Sample.Backend.Backend\SkyApm.Sample.Backend.Backend.csproj", "{EB4F0DFD-CBDC-4F65-94B8-5BCA1C477FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyApm.Sample.Backend.Backend", "src\SkyApm.Sample.Backend.Backend\SkyApm.Sample.Backend.Backend.csproj", "{EB4F0DFD-CBDC-4F65-94B8-5BCA1C477FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmb.SkyApm.Abstractions", "src\Cmb.SkyApm.Abstractions\Cmb.SkyApm.Abstractions.csproj", "{E467A46E-2554-449A-AFB8-71A0A4F87BEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cmb.SkyApm.Abstractions", "src\Cmb.SkyApm.Abstractions\Cmb.SkyApm.Abstractions.csproj", "{E467A46E-2554-449A-AFB8-71A0A4F87BEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmb.SkyApm.Transport.Http", "src\Cmb.SkyApm.Transport.Http\Cmb.SkyApm.Transport.Http.csproj", "{CCE73116-AAF1-497E-8A83-BA7BF1640C45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -262,6 +264,10 @@ Global
 		{E467A46E-2554-449A-AFB8-71A0A4F87BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E467A46E-2554-449A-AFB8-71A0A4F87BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E467A46E-2554-449A-AFB8-71A0A4F87BEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCE73116-AAF1-497E-8A83-BA7BF1640C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCE73116-AAF1-497E-8A83-BA7BF1640C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCE73116-AAF1-497E-8A83-BA7BF1640C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCE73116-AAF1-497E-8A83-BA7BF1640C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -312,6 +318,7 @@ Global
 		{897EC79B-DFA5-4657-88D4-76EE82A23255} = {EF6194B2-9ACB-49B9-8049-DD6AFAEB0399}
 		{EB4F0DFD-CBDC-4F65-94B8-5BCA1C477FED} = {844CEACD-4C85-4B15-9E2B-892B01FDA4BB}
 		{E467A46E-2554-449A-AFB8-71A0A4F87BEF} = {1DC32510-9368-426F-B1FD-DBEDA3CE14AE}
+		{CCE73116-AAF1-497E-8A83-BA7BF1640C45} = {1DC32510-9368-426F-B1FD-DBEDA3CE14AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94C0DA2C-CCCB-4314-93A2-9809B5DD0583}

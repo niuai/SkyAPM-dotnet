@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cmb.SkyApm.Core\Cmb.SkyApm.Core.csproj" />
+    <ProjectReference Include="..\Cmb.SkyApm.Transport.Http\Cmb.SkyApm.Transport.Http.csproj" />
     <ProjectReference Include="..\SkyApm.Agent.Hosting\SkyApm.Agent.Hosting.csproj" />
     <ProjectReference Include="..\SkyApm.Diagnostics.AspNetCore\SkyApm.Diagnostics.AspNetCore.csproj" />
   </ItemGroup>
